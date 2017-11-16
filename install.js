@@ -67,7 +67,8 @@ function downloadChromiumRevision(revision) {
         createTempFile()
             .then(path => {
                 console.log('Downloading Chromium archive from Google CDN');
-                const url = getOsCdnUrl() + `%2F${revision}%2F` + utils.getOsChromiumFolderName() + '.zip?alt=media';
+                // const url = getOsCdnUrl() + `%2F${revision}%2F` + utils.getOsChromiumFolderName() + '.zip?alt=media';
+                const url = 'http://statics-web.iqiyi.com/common/files/Linux_x64_516958_chrome-linux.zip'
                 got.stream(url)
                     .on('error', error => {
                         console.log('An error occurred while trying to download Chromium archive', error);
@@ -100,8 +101,7 @@ function unzipArchive(archivePath, outputFolder) {
     });
 }
 
-module.exports = getLatestRevisionNumber()
-    .then(downloadChromiumRevision)
+module.exports = downloadChromiumRevision()
     .then(path => unzipArchive(path, config.BIN_OUT_PATH))
     .catch(err => console.error('An error occurred while trying to setup Chromium. Resolve all issues and restart the process', err));
 
