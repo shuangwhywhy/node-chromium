@@ -8,30 +8,42 @@ const tmp = require('tmp');
 const config = require('./config');
 const utils = require('./utils');
 
-const CDN_URL = 'https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/';
+// const CDN_URL = 'https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/';
+const CDN_URL = 'https://statics-web.iqiyi.com/common/files/'
 
-function getOsCdnUrl() {
-    let url = CDN_URL;
+const revisionMap = {
+    Win: 520125,
+    Win_x64: 520122,
+    Linux: 382086,
+    Linux_x64: 520110,
+    Mac: 520122
+}
 
+function getPlatform () {
     const platform = process.platform;
 
     if (platform === 'linux') {
-        url += 'Linux';
+        url = 'Linux';
         if (process.arch === 'x64') {
             url += '_x64';
         }
     } else if (platform === 'win32') {
-        url += 'Win';
+        url = 'Win';
         if (process.arch === 'x64') {
             url += '_x64';
         }
     } else if (platform === 'darwin') {
-        url += 'Mac';
+        url = 'Mac';
     } else {
         console.log('Unknown platform or architecture found:', process.platform, process.arch);
         throw new Error('Unsupported platform');
     }
 
+    return url;
+}
+
+function getOsCdnUrl () {
+    let url = CDN_URL + getPlatform();
     return url;
 }
 
@@ -62,13 +74,13 @@ function createTempFile() {
     });
 }
 
-function downloadChromiumRevision(revision) {
+function downloadChromiumRevision() {
     return new Promise((resolve, reject) => {
         createTempFile()
             .then(path => {
+                var revision = revisionMap[getPlatform()]
                 console.log('Downloading Chromium archive from CDN');
-                // const url = getOsCdnUrl() + `%2F${revision}%2F` + utils.getOsChromiumFolderName() + '.zip?alt=media';
-                const url = 'https://statics-web.iqiyi.com/common/files/Linux_x64_520110_chrome-linux.zip'
+                const url = getOsCdnUrl() + `%2F${revision}%2F` + utils.getOsChromiumFolderName() + '.zip?alt=media';
                 got.stream(url)
                     .on('error', error => {
                         console.log('An error occurred while trying to download Chromium archive', error);
