@@ -66,9 +66,9 @@ function downloadChromiumRevision(revision) {
     return new Promise((resolve, reject) => {
         createTempFile()
             .then(path => {
-                console.log('Downloading Chromium archive from Google CDN');
+                console.log('Downloading Chromium archive from CDN');
                 // const url = getOsCdnUrl() + `%2F${revision}%2F` + utils.getOsChromiumFolderName() + '.zip?alt=media';
-                const url = 'http://statics-web.iqiyi.com/common/files/Linux_x64_516958_chrome-linux.zip'
+                const url = 'https://statics-web.iqiyi.com/common/files/Linux_x64_520110_chrome-linux.zip'
                 got.stream(url)
                     .on('error', error => {
                         console.log('An error occurred while trying to download Chromium archive', error);
