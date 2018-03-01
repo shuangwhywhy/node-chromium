@@ -12,11 +12,11 @@ const utils = require('./utils');
 const CDN_URL = 'https://statics-web.iqiyi.com/common/files/'
 
 const revisionMap = {
-    Win: 520125,
-    Win_x64: 520122,
+    Win: 540119,
+    Win_x64: 540119,
     Linux: 382086,
-    Linux_x64: 520110,
-    Mac: 520122
+    Linux_x64: 540120,
+    Mac: 540119
 }
 
 function getPlatform () {
